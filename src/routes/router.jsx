@@ -1,0 +1,43 @@
+import AuthLayout from '@/layouts/AuthLayout';
+import DashboardLayout from '@/layouts/DashboardLayout';
+import SettingsLayout from '@/layouts/SettingsLayout';
+import ChangePassword from '@/pages/auth/changePassword/ChangePassword';
+import Login from '@/pages/auth/login/Login';
+import AddClient from '@/pages/dashboard/addClient/AddClient';
+import AddPackage from '@/pages/dashboard/addPackage/AddPackage';
+import ClientDetails from '@/pages/dashboard/clientDetails/ClientDetails';
+import Statistics from '@/pages/dashboard/stats/Statistics';
+import ErrorPage from '@/pages/error/ErrorPage';
+import SettingsHome from '@/pages/settings/SettingsHome';
+import { createBrowserRouter, redirect } from 'react-router';
+
+const router = createBrowserRouter([
+  { path: '/', loader: () => redirect('/dashboard') },
+  {
+    element: <AuthLayout />,
+    children: [
+      { path: '/login', element: <Login /> },
+      { path: '/change-password', element: <ChangePassword /> },
+    ]
+  },
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
+    children: [
+      { index: true, element: <Statistics /> },
+      { path: 'add-client', element: <AddClient /> },
+      { path: 'add-package', element: <AddPackage /> },
+      { path: 'client-details/:id', element: <ClientDetails /> },
+    ],
+  },
+  {
+    path: '/settings',
+    element: <SettingsLayout />,
+    children: [
+      { index: true, element: <SettingsHome /> }
+    ],
+  },
+  { path: '*', element: <ErrorPage /> }
+]);
+
+export default router;
