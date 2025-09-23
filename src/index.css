@@ -1,9 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* @custom-variant dark (&:where(.dark, .dark *)); */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Fonts */
+  --font-genos: "Genos", sans-serif;
+  --font-bricolage-grotesque: "Bricolage Grotesque", sans-serif;
+  /* -=-=-=-=-=-=-=-=-=-=- */
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

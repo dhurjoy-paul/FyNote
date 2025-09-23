@@ -1,6 +1,10 @@
+import { Outlet } from "react-router"
+
 const AuthLayout = () => {
   return (
-    <div>AuthLayout</div>
+    <main className="bg-muted">
+      <Outlet />
+    </main>
   )
 }
 export default AuthLayout
