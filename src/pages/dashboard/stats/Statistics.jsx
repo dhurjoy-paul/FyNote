@@ -1,6 +1,10 @@
+import { SectionCards } from "./SectionCards"
+
 const Statistics = () => {
   return (
-    <div>Statistics</div>
+    <div>
+      <SectionCards />
+    </div>
   )
 }
 export default Statistics

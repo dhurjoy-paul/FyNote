@@ -61,7 +61,7 @@ export function AppSidebar({ ...props }) {
       <DropdownMenuSeparator />
 
       {/* content / menu */}
-      <SidebarContent>
+      <SidebarContent className="mt-3.5">
         <NavMenu items={data.navMain} />
         <NavMenu items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
