@@ -28,13 +28,13 @@ const router = createBrowserRouter([
       { path: 'add-client', element: <AddClient /> },
       { path: 'add-package', element: <AddPackage /> },
       { path: 'client-details/:id', element: <ClientDetails /> },
-    ],
-  },
-  {
-    path: '/settings',
-    element: <SettingsLayout />,
-    children: [
-      { index: true, element: <SettingsHome /> }
+      {
+        path: 'settings',
+        element: <SettingsLayout />,
+        children: [
+          { index: true, element: <SettingsHome /> }
+        ],
+      },
     ],
   },
   { path: '*', element: <ErrorPage /> }
