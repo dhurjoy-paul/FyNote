@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ModeToggle } from "@/theme/ModeToggle"
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, GalleryVerticalEnd } from "lucide-react"
 import { useState } from 'react'
@@ -33,20 +34,20 @@ const Login = () => {
   }
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+    <div className="flex flex-col justify-center items-center gap-6 p-6 md:p-10 min-h-svh">
       <motion.div
         initial={{ opacity: 0, y: 200 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex w-full max-w-sm flex-col gap-6">
+        className="flex flex-col gap-6 w-full max-w-sm">
 
         {/* site name */}
-        <span href="#" className="flex items-center gap-2 self-center font-semibold text-2xl font-bricolage-grotesque">
-          <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+        <div className="flex justify-center items-center self-center gap-2 w-full font-bricolage-grotesque font-semibold text-2xl">
+          <div className="flex justify-center items-center bg-primary rounded-md size-6 text-primary-foreground">
             <GalleryVerticalEnd className="size-4" />
           </div>
           FyN
-        </span>
+        </div>
 
         {/* main form */}
         <div
@@ -60,11 +61,11 @@ const Login = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin}>
-                <div className="grid gap-6">
-                  <div className="grid gap-6">
+                <div className="gap-6 grid">
+                  <div className="gap-6 grid">
 
                     {/* email */}
-                    <div className="grid gap-3">
+                    <div className="gap-3 grid">
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" type="email" required
                         placeholder="m@example.com"
@@ -73,15 +74,15 @@ const Login = () => {
                     </div>
 
                     {/* password */}
-                    <div className="grid gap-3 relative">
-                      <div className="flex items-center ">
+                    <div className="relative gap-3 grid">
+                      <div className="flex items-center">
                         <Label htmlFor="password">Password</Label>
                         <motion.button
                           type="button"
                           onClick={handleForgotPass}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.95 }}
-                          className="ml-auto text-sm text-primary underline-offset-4 hover:underline focus:outline-none cursor-pointer"
+                          className="ml-auto focus:outline-none text-primary text-sm hover:underline underline-offset-4 cursor-pointer"
                         >
                           Forgot password?
                         </motion.button>
@@ -92,7 +93,7 @@ const Login = () => {
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} />
-                      <button type="button" className="absolute bottom-1.5 right-3 cursor-pointer"
+                      <button type="button" className="right-3 bottom-1.5 absolute text-muted-foreground cursor-pointer"
                         onClick={() => setShowPass((prev) => !prev)}>
                         {
                           showPass
@@ -110,18 +111,17 @@ const Login = () => {
                       </Button>
                     </motion.div>
                   </div>
-                  <div className="text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <a href="#" className="underline underline-offset-4">
-                      Contact Us
-                    </a>
+                  <div className="flex justify-between items-center text-sm">
+                    <p>Don&apos;t have an account?{" "}
+                      <a href="#" className="underline underline-offset-4">Contact Us</a></p>
+                    <ModeToggle />
                   </div>
                 </div>
               </form>
             </CardContent>
           </Card>
           <div
-            className="text-muted-foreground *:[a]:hover:text-primary text-center text-sm text-balance *:[a]:underline *:[a]:underline-offset-4">
+            className="text-muted-foreground *:[a]:hover:text-primary text-sm text-center *:[a]:underline *:[a]:underline-offset-4 text-balance">
             Developed and designed by <a className=""><strong>Team QodeOn</strong></a> Copyright © {new Date().getFullYear()} - All right reserved by QodeOn
           </div>
         </div>
