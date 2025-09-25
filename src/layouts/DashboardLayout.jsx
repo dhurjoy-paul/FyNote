@@ -18,7 +18,9 @@ const DashboardLayout = () => {
         <SiteHeader />
 
         {/* layout outlet children */}
-        <Outlet />
+        <main className="flex-1 mt-8 px-6 lg:px-8">
+          <Outlet />
+        </main>
 
       </SidebarInset>
     </SidebarProvider>

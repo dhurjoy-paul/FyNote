@@ -72,7 +72,7 @@ export function SectionCards() {
   const navigate = useNavigate();
 
   return (
-    <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-8 px-4 lg:px-6">
+    <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {cardData.map((card, index) => {
         const TrendIcon = card.isPositive ? IconTrendingUp : IconTrendingDown;
         const isClickable = !!card.url;
@@ -104,7 +104,6 @@ export function SectionCards() {
                   {card.footerDescription}
                 </p>
               </div>
-              <Button variant="secondary" size="sm">Look</Button>
             </CardFooter>
           </Card>
         );
