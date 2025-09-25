@@ -1,7 +1,7 @@
 import { NavMenu } from "@/components/dashboard/NavMenu"
 import { NavUser } from "@/components/dashboard/NavUser"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/dashboard/Sidebar"
-import { IconBackpack, IconDashboard, IconInnerShadowTop, IconPackage, IconSettings, IconUser, IconUserPlus } from "@tabler/icons-react"
+import { IconBackpack, IconDashboard, IconInnerShadowTop, IconMapPinSearch, IconPackage, IconSettings, IconUser, IconUserPlus } from "@tabler/icons-react"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 
 const data = {
@@ -30,6 +30,12 @@ const data = {
       title: "Add Packages",
       url: "/dashboard/add-package",
       icon: IconPackage,
+    },
+    {
+      title: "Get Location",
+      url: "/dashboard/get-location",
+      icon: IconMapPinSearch,
+      badge: "Beta",
     }
   ],
   navSecondary: [

@@ -11,6 +11,7 @@ import OffClients from '@/pages/dashboard/clients/OffClients';
 import PaidClients from '@/pages/dashboard/clients/PaidClients';
 import TotalClients from '@/pages/dashboard/clients/TotalClients';
 import UnpaidClients from '@/pages/dashboard/clients/UnpaidClients';
+import GetLocation from '@/pages/dashboard/getLocation/GetLocation';
 import Statistics from '@/pages/dashboard/stats/Statistics';
 import ErrorPage from '@/pages/error/ErrorPage';
 import SettingsHome from '@/pages/settings/SettingsHome';
@@ -30,9 +31,11 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       { index: true, element: <Statistics /> },
+      { path: 'client-details/:id', element: <ClientDetails /> },
       { path: 'add-client', element: <AddClient /> },
       { path: 'add-package', element: <AddPackage /> },
-      { path: 'client-details/:id', element: <ClientDetails /> },
+      { path: 'get-location', element: <GetLocation /> },
+
       { path: 'total-clients', element: <TotalClients /> },
       { path: 'paid-clients', element: <PaidClients /> },
       { path: 'unpaid-clients', element: <UnpaidClients /> },
