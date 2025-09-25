@@ -102,14 +102,9 @@ const Login = () => {
                         }
                       </button>
                     </div>
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button type="submit" className="w-full cursor-pointer">
-                        Log In
-                      </Button>
-                    </motion.div>
+                    <Button type="submit" className="w-full cursor-pointer">
+                      Log In
+                    </Button>
                   </div>
                   <div className="flex justify-between items-center text-sm">
                     <p>Don&apos;t have an account?{" "}
