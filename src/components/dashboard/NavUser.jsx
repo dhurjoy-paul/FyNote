@@ -1,10 +1,18 @@
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/dashboard/Sidebar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { IconDotsVertical, IconLogout, IconUserCircle } from "@tabler/icons-react"
-import { HashIcon } from "lucide-react"
+import LoadingSpinner from "@/assets/loadingSpinner";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/dashboard/Sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
+import { IconDotsVertical, IconLogout, IconUserCircle } from "@tabler/icons-react";
+import { HashIcon } from "lucide-react";
 
-export function NavUser({ user }) {
-  const { isMobile } = useSidebar()
+export function NavUser() {
+  const { isMobile } = useSidebar();
+  const { data: user, error, isLoading, refetch } = useAuth();
+  const { ispName, ispLogo, ownerName, phone, email, createdAt, updatedAt } = user || {
+    ownerName: "Unknown User",
+    phone: "N/A",
+    email: "N/A",
+  };
 
   return (
     <SidebarMenu>
@@ -15,10 +23,14 @@ export function NavUser({ user }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <p><HashIcon /></p>
-              <div className="flex-1 grid text-sm text-left leading-tight">
-                <span className="font-medium truncate">{user.name}</span>
-                <span className="text-muted-foreground text-xs truncate">{user.phone}</span>
-              </div>
+              {
+                isLoading
+                  ? <LoadingSpinner className="size-px" />
+                  : <div className="flex-1 grid text-sm text-left leading-tight">
+                    <span className="font-medium truncate">{ownerName}</span>
+                    <span className="text-muted-foreground text-xs truncate">{phone}</span>
+                  </div>
+              }
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>

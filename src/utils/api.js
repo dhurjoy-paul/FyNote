@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: 'https://isp-rest-api.onrender.com',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // withCredentials: true,
 });
 
-export default api;
+export const apiBase = axios.create({
+  baseURL: 'https://isp-rest-api.onrender.com'
+});

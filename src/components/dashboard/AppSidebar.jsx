@@ -5,11 +5,6 @@ import { IconBackpack, IconDashboard, IconInnerShadowTop, IconMapPinSearch, Icon
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 
 const data = {
-  user: {
-    name: "Owner Name",
-    phone: "+8801234567890",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -54,6 +49,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }) {
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
 
@@ -75,7 +71,7 @@ export function AppSidebar({ ...props }) {
       {/* footer */}
       <DropdownMenuSeparator />
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
