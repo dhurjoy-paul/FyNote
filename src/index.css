@@ -151,4 +151,18 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
+  /* login button spinner */
+  @keyframes fast-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-extra-fast {
+    animation: fast-spin 0.5s linear infinite;
+  }
 }
