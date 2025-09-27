@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ModeToggle } from "@/theme/ModeToggle"
-import { apiBase } from "@/utils/api"
+import { api } from "@/utils/api"
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, GalleryVerticalEnd } from "lucide-react"
 import { useState } from 'react'
@@ -40,7 +40,7 @@ const Login = () => {
     console.log('⦿•=>', 'Login attempt');
     console.log('⦿•=>', formData); // to be removed
     try {
-      const response = await apiBase.post('/auth/login', formData);
+      const response = await api.post('/auth/login', formData);
       if (response.status === 200) {
         console.log('⦿•=>', 'Success:', response.data); // to be removed
         notifySuccess("Successfully logged in!")
