@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ErrorAlert, LoadingSkeleton } from "./common"
 import "./leaflet-config"
 import { LocationDetails } from "./LocationDetails"
+import { LocationInput } from "./LocationInput"
 import { LocationMap } from "./LocationMap"
 import { TesterHeader } from "./TesterHeader"
 import { useLocationAccuracy } from "./useLocationAccuracy"
@@ -15,6 +16,7 @@ export default function LocationAccuracyTester() {
     address,
     getLocation,
     handleMarkerDragEnd,
+    setLocationFromUrl,
   } = useLocationAccuracy()
 
   const renderContent = () => {
@@ -24,6 +26,10 @@ export default function LocationAccuracyTester() {
       case "error":
         return <ErrorAlert message={error} />
       case "success":
+        if (!refinedLocation) {
+          return null
+        }
+
         return (
           <div className="space-y-4">
             <LocationDetails
@@ -32,13 +38,12 @@ export default function LocationAccuracyTester() {
               address={address}
             />
             <LocationMap
-              center={[initialLocation.lat, initialLocation.lng]}
+              center={[refinedLocation.lat, refinedLocation.lng]}
               markerPosition={[refinedLocation.lat, refinedLocation.lng]}
               onMarkerDragEnd={handleMarkerDragEnd}
             />
           </div>
         )
-      case "idle":
       default:
         return null
     }
@@ -49,7 +54,10 @@ export default function LocationAccuracyTester() {
       <CardHeader>
         <TesterHeader onGetLocation={getLocation} isLoading={status === "loading"} />
       </CardHeader>
-      <CardContent className="space-y-4">{renderContent()}</CardContent>
+      <CardContent className="space-y-4">
+        <LocationInput onUrlParse={setLocationFromUrl} />
+        {renderContent()}
+      </CardContent>
     </Card>
   )
 }

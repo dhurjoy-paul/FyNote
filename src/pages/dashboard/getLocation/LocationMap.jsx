@@ -18,7 +18,7 @@ export const LocationMap = ({ center, markerPosition, onMarkerDragEnd }) => {
 
   return (
     <div className="rounded-lg h-96 overflow-hidden">
-      <MapContainer center={center} zoom={17} style={{ height: "100%", width: "100%" }}>
+      <MapContainer center={center} zoom={17} style={{ height: "100%", width: "100%", zIndex:0 }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
           draggable={true}

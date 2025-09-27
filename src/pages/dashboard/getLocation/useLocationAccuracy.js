@@ -53,8 +53,27 @@ export function useLocationAccuracy() {
   }
 
   const handleMarkerDragEnd = useCallback((newLatLng) => {
-    setRefinedLocation(prev => ({ ...prev, ...newLatLng }))
+    setRefinedLocation(prev => ({ ...(prev || {}), ...newLatLng }))
     fetchAddress(newLatLng.lat, newLatLng.lng)
+  }, [fetchAddress])
+
+  const setLocationFromUrl = useCallback((url) => {
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/
+    const match = url.match(regex)
+
+    if (match && match.length >= 3) {
+      const lat = parseFloat(match[1])
+      const lng = parseFloat(match[2])
+      const locationData = { lat, lng, accuracy: 0 }
+
+      setInitialLocation(null)
+      setRefinedLocation(locationData)
+      setStatus("success")
+      setError(null)
+      fetchAddress(lat, lng)
+      return true
+    }
+    return false
   }, [fetchAddress])
 
   return {
@@ -65,5 +84,6 @@ export function useLocationAccuracy() {
     address,
     getLocation,
     handleMarkerDragEnd,
+    setLocationFromUrl
   }
 }
