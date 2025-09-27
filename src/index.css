@@ -139,19 +139,20 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
+  /* for remove number input field's icon */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-
   /* Firefox */
   input[type="number"] {
     -moz-appearance: textfield;
   }
+  /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-  /* login button spinner */
+  /* for login button spinner */
   @keyframes fast-spin {
     from {
       transform: rotate(0deg);
@@ -160,8 +161,19 @@
       transform: rotate(360deg);
     }
   }
-
   .animate-extra-fast {
     animation: fast-spin 0.5s linear infinite;
   }
+  /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  
+  /* for top loader */
+  #nprogress .bar {
+    background: #ff6347 !important;
+    height: 3px !important;
+  }
+  
+  #nprogress .spinner {
+    display: none !important;
+  }
+  /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 }

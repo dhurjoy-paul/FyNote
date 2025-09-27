@@ -1,21 +1,23 @@
 import AuthLayout from '@/layouts/AuthLayout';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import SettingsLayout from '@/layouts/SettingsLayout';
-import ChangePassword from '@/pages/auth/changePassword/ChangePassword';
-import Login from '@/pages/auth/login/Login';
-import AddClient from '@/pages/dashboard/addClient/AddClient';
-import AddPackage from '@/pages/dashboard/addPackage/AddPackage';
-import ClientDetails from '@/pages/dashboard/clientDetails/ClientDetails';
-import NewClients from '@/pages/dashboard/clients/NewClients';
-import OffClients from '@/pages/dashboard/clients/OffClients';
-import PaidClients from '@/pages/dashboard/clients/PaidClients';
-import TotalClients from '@/pages/dashboard/clients/TotalClients';
-import UnpaidClients from '@/pages/dashboard/clients/UnpaidClients';
-import GetLocation from '@/pages/dashboard/getLocation/GetLocation';
-import Statistics from '@/pages/dashboard/stats/Statistics';
 import ErrorPage from '@/pages/error/ErrorPage';
-import SettingsHome from '@/pages/settings/SettingsHome';
+import { lazy } from 'react';
 import { createBrowserRouter, redirect } from 'react-router';
+
+const ChangePassword = lazy(() => import('@/pages/auth/changePassword/ChangePassword'));
+const Login = lazy(() => import('@/pages/auth/login/Login'));
+const AddClient = lazy(() => import('@/pages/dashboard/addClient/AddClient'));
+const AddPackage = lazy(() => import('@/pages/dashboard/addPackage/AddPackage'));
+const ClientDetails = lazy(() => import('@/pages/dashboard/clientDetails/ClientDetails'));
+const NewClients = lazy(() => import('@/pages/dashboard/clients/NewClients'));
+const OffClients = lazy(() => import('@/pages/dashboard/clients/OffClients'));
+const PaidClients = lazy(() => import('@/pages/dashboard/clients/PaidClients'));
+const TotalClients = lazy(() => import('@/pages/dashboard/clients/TotalClients'));
+const UnpaidClients = lazy(() => import('@/pages/dashboard/clients/UnpaidClients'));
+const GetLocation = lazy(() => import('@/pages/dashboard/getLocation/GetLocation'));
+const Statistics = lazy(() => import('@/pages/dashboard/stats/Statistics'));
+const SettingsHome = lazy(() => import('@/pages/settings/SettingsHome'));
 
 const router = createBrowserRouter([
   { path: '/', loader: () => redirect('/dashboard') },
@@ -45,7 +47,13 @@ const router = createBrowserRouter([
         path: 'settings',
         element: <SettingsLayout />,
         children: [
-          { index: true, element: <SettingsHome /> }
+          {
+            index: true, element: <SettingsHome />,
+            loader: async () => {
+              await new Promise(resolve => setTimeout(resolve, 5000));
+              return null;
+            }
+          }
         ],
       },
     ],

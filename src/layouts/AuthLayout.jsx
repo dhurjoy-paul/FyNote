@@ -1,9 +1,15 @@
-import { Outlet } from "react-router"
+import GlobalLoader from "@/components/shared/GlobalLoader";
+import PageLoaderFallback from "@/components/shared/PageLoaderFallback";
+import { Suspense } from 'react';
+import { Outlet } from "react-router";
 
 const AuthLayout = () => {
   return (
     <main className="bg-muted">
-      <Outlet />
+      <GlobalLoader />
+      <Suspense fallback={<PageLoaderFallback />}>
+        <Outlet />
+      </Suspense>
     </main>
   )
 }
