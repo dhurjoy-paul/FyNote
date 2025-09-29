@@ -1,28 +1,21 @@
+import { api } from '@/utils/api';
+import { useQuery } from '@tanstack/react-query';
 
-import { api } from "@/utils/api";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+const fetchUserProfile = async () => {
+  const response = await api.get('/ispProfile');
+  console.log('⦿•=>', response.data.user);
+  return response.data.user;
+};
 
-export function useAuth() {
-  const navigate = useNavigate();
-
-  const query = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async () => {
-      const { data } = await api.get("/ispProfile");
-      return data;
-    },
-    retry: false,
-    onError: (err) => {
-      const status = err.response?.status;
-      if (status === 401) {
-        console.error("⦿•=> Unauthorized: User not logged in or session expired");
-        navigate("/auth/login");
-      } else {
-        console.error("⦿•=> Other error:", err.response?.data || err.message);
-      }
-    },
+export const useAuth = (options = {}) => {
+  return useQuery({
+    queryKey: ['userProfile'],
+    queryFn: fetchUserProfile,
+    refetchInterval: 30000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    staleTime: 5000,
+    retry: 1,
+    ...options,
   });
-
-  return query;
-}
+};
