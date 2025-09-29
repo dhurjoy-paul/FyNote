@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const fetchUserProfile = async () => {
   const response = await api.get('/ispProfile');
-  console.log('⦿•=>', response.data.user);
+  console.log('⦿•=>', response.data.user); // to be removed
   return response.data.user;
 };
 

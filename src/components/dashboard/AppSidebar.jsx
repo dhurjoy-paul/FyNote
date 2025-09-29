@@ -1,53 +1,11 @@
 import { NavMenu } from "@/components/dashboard/NavMenu"
 import { NavUser } from "@/components/dashboard/NavUser"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/dashboard/Sidebar"
+import { navigationConfig } from "@/config/navigation"
 import { useAuth } from "@/hooks/useAuth"
-import { IconBackpack, IconDashboard, IconInnerShadowTop, IconMapPinSearch, IconPackage, IconSettings, IconUser, IconUserPlus } from "@tabler/icons-react"
+import { IconInnerShadowTop } from "@tabler/icons-react"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 
-const nav = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Client Details",
-      url: "/dashboard/client-details/:id",
-      icon: IconUser,
-    },
-    {
-      title: "Add Clients",
-      url: "/dashboard/add-client",
-      icon: IconUserPlus,
-    },
-    {
-      title: "Add Packages",
-      url: "/dashboard/add-package",
-      icon: IconPackage,
-    },
-    {
-      title: "Get Location",
-      url: "/dashboard/get-location",
-      icon: IconMapPinSearch,
-      badge: "Beta",
-    }
-  ],
-  navSecondary: [
-    {
-      title: "Backup",
-      url: "",
-      icon: IconBackpack,
-      disable: true,
-    },
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: IconSettings,
-    }
-  ]
-}
 
 export function AppSidebar({ ...props }) {
   const {
@@ -78,8 +36,8 @@ export function AppSidebar({ ...props }) {
 
       {/* content / menu */}
       <SidebarContent className="mt-3.5">
-        <NavMenu items={nav.navMain} />
-        <NavMenu items={nav.navSecondary} className="mt-auto" />
+        <NavMenu items={navigationConfig.navMain} />
+        <NavMenu items={navigationConfig.navSecondary} className="mt-auto" />
       </SidebarContent>
 
       {/* footer */}
