@@ -5,19 +5,23 @@ import ErrorPage from '@/pages/error/ErrorPage';
 import { lazy } from 'react';
 import { createBrowserRouter, redirect } from 'react-router';
 
-const ChangePassword = lazy(() => import('@/pages/auth/changePassword/ChangePassword'));
 const Login = lazy(() => import('@/pages/auth/login/Login'));
-const AddClient = lazy(() => import('@/pages/dashboard/addClient/AddClient'));
-const AddPackage = lazy(() => import('@/pages/dashboard/addPackage/AddPackage'));
+const ChangePassword = lazy(() => import('@/pages/auth/changePassword/ChangePassword'));
+
+const Statistics = lazy(() => import('@/pages/dashboard/stats/Statistics'));
 const ClientDetails = lazy(() => import('@/pages/dashboard/clientDetails/ClientDetails'));
+const AddClient = lazy(() => import('@/pages/dashboard/addClient/AddClient'));
+const Packages = lazy(() => import('@/pages/dashboard/packages/Packages'));
+const AddPackage = lazy(() => import('@/pages/dashboard/addPackage/AddPackage'));
+const GetLocation = lazy(() => import('@/pages/dashboard/getLocation/GetLocation'));
+const SettingsHome = lazy(() => import('@/pages/settings/SettingsHome'));
+
 const NewClients = lazy(() => import('@/pages/dashboard/clients/NewClients'));
 const OffClients = lazy(() => import('@/pages/dashboard/clients/OffClients'));
 const PaidClients = lazy(() => import('@/pages/dashboard/clients/PaidClients'));
 const TotalClients = lazy(() => import('@/pages/dashboard/clients/TotalClients'));
 const UnpaidClients = lazy(() => import('@/pages/dashboard/clients/UnpaidClients'));
-const GetLocation = lazy(() => import('@/pages/dashboard/getLocation/GetLocation'));
-const Statistics = lazy(() => import('@/pages/dashboard/stats/Statistics'));
-const SettingsHome = lazy(() => import('@/pages/settings/SettingsHome'));
+
 
 const router = createBrowserRouter([
   { path: '/', loader: () => redirect('/dashboard') },
@@ -36,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'client-details/:id', element: <ClientDetails /> },
       { path: 'add-client', element: <AddClient /> },
       { path: 'add-package', element: <AddPackage /> },
+      { path: 'packages', element: <Packages /> },
       { path: 'get-location', element: <GetLocation /> },
 
       { path: 'total-clients', element: <TotalClients /> },

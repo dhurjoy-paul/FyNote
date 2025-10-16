@@ -27,6 +27,11 @@ export const navigationConfig = {
       icon: IconUserPlus,
     },
     {
+      title: "Packages",
+      url: "/dashboard/packages",
+      icon: IconPackage,
+    },
+    {
       title: "Add Packages",
       url: "/dashboard/add-package",
       icon: IconPackage,

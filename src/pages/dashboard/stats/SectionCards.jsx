@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import { useNavigate } from "react-router";
