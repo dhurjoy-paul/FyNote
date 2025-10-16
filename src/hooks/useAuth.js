@@ -2,19 +2,29 @@ import { api } from '@/utils/api';
 import { useQuery } from '@tanstack/react-query';
 
 const fetchUserProfile = async () => {
-  const response = await api.get('/ispProfile');
-  console.log('⦿•=>', response.data.user); // to be removed
-  return response.data.user;
+  try {
+    const response = await api.get('/ispProfile');
+
+    if (!response.data?.user) {
+      throw new Error('Invalid user data received');
+    }
+
+    return response.data.user;
+  } catch (error) {
+    console.error('⦿•=>', 'Failed to fetch user profile:', error);
+    throw error;
+  }
 };
 
 export const useAuth = (options = {}) => {
   return useQuery({
     queryKey: ['userProfile'],
     queryFn: fetchUserProfile,
-    refetchInterval: 30000,
+    refetchInterval: 5 * 60 * 1000, // 5 mins
     refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
-    staleTime: 5000,
+    refetchOnReconnect: true, // best for network issues
+    staleTime: 2 * 60 * 1000, // 2 mins
+    cacheTime: 10 * 60 * 1000, // 10 mins
     retry: 1,
     ...options,
   });
