@@ -1,32 +1,38 @@
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PackageCard = ({ card }) => {
   const { isp_id, package_id, name, autoName, bandwidth, price } = card;
 
   return (
     <Card
-      className={`@container/card dark:bg-card bg-gradient-to-t from-primary/5 to-card shadow-xs transition-all ${isClickable ? 'cursor-pointer hover:shadow-md transition-all duration-200 ease-in-out' : ''}`}
-      onClick={() => isClickable && navigate(card.url)}
+      className={`@container/card dark:bg-card bg-gradient-to-t from-primary/5 to-card shadow-xs hover:shadow-md transition-all duration-200 ease-in-out`}
     >
       <CardHeader>
-        <CardDescription>
+        <CardTitle className="font-normal tabular-nums text-base @[250px]/card:text-xl">
           {name ? name : autoName ? autoName : `Package #${package_id}`}
-        </CardDescription>
-        <CardTitle className="font-semibold tabular-nums text-2xl @[250px]/card:text-3xl">
-          {bandwidth} Mbps - ৳{price}
         </CardTitle>
       </CardHeader>
 
-      {/* <CardFooter className="flex justify-between items-center">
-        <div className="flex-col items-start gap-1.5 text-sm">
-          <p className="flex gap-2 font-medium line-clamp-1">
-            {card.footerTitle} <TrendIcon className="size-4" />
-          </p>
-          <p className="text-muted-foreground">
-            {card.footerDescription}
+      <CardContent className="gap-2 grid grid-cols-[1fr_1fr_max-content] @[454px]/panel:grid-cols-2">
+        <div>
+          <CardDescription >Bandwidth</CardDescription>
+          <p>
+            <span className="font-semibold text-2xl @[250px]/card:text-3xl">{bandwidth} </span>
+            <span>Mbps</span>
           </p>
         </div>
-      </CardFooter> */}
+        <div>
+          <CardDescription >Price</CardDescription>
+          <p>
+            <span className="font-semibold text-2xl @[250px]/card:text-3xl">{price} </span>
+            <span>tk</span>
+          </p>
+        </div>
+        <div className="self-end @[454px]/panel:mt-4">
+          <Button variant="outline" size="sm" className="w-fit cursor-pointer">Edit</Button>
+        </div>
+      </CardContent>
     </Card>
   )
 }

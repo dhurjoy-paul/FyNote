@@ -55,7 +55,7 @@ const router = createBrowserRouter([
           {
             index: true, element: <SettingsHome />,
             loader: async () => {
-              await new Promise(resolve => setTimeout(resolve, 5000));
+              await new Promise(resolve => setTimeout(resolve, 1000));
               return null;
             }
           }

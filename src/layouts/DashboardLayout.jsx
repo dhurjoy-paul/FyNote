@@ -24,7 +24,9 @@ const DashboardLayout = () => {
         {/* layout outlet children */}
         <main className="flex-1 mt-8 px-6 lg:px-8">
           <Suspense fallback={<PageLoaderFallback />}>
-            <Outlet />
+            <div className="@container/panel">
+              <Outlet />
+            </div>
           </Suspense>
         </main>
 

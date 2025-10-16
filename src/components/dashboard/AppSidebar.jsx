@@ -2,7 +2,8 @@ import { NavMenu } from "@/components/dashboard/NavMenu"
 import { NavUser } from "@/components/dashboard/NavUser"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/dashboard/Sidebar"
 import { navigationConfig } from "@/config/navigation"
-import { useAuth } from "@/hooks/useAuth"
+// import { useAuth } from "@/hooks/useAuth"
+import { useAuth } from "@/hooks/allHooks"
 import { IconInnerShadowTop } from "@tabler/icons-react"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 
@@ -15,6 +16,7 @@ export function AppSidebar({ ...props }) {
     refetch,
     isRefetching
   } = useAuth();
+
   const { ispName, ispLogo } = user || {};
 
 
