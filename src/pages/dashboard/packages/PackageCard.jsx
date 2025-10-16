@@ -18,7 +18,7 @@ const PackageCard = ({ card }) => {
         <div>
           <CardDescription >Bandwidth</CardDescription>
           <p>
-            <span className="font-semibold text-2xl @[250px]/card:text-3xl">{bandwidth} </span>
+            <span className="font-semibold text-xl @[250px]/card:text-3xl">{bandwidth} </span>
             <span>Mbps</span>
           </p>
         </div>
