@@ -89,7 +89,7 @@ const AddPackageDrawer = () => {
       </Card>
 
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="mx-auto w-full max-w-xs sm:max-w-sm">
           <DrawerHeader>
             <DrawerTitle>Add Package</DrawerTitle>
             <DrawerDescription className="text-center">

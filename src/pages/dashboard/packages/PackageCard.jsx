@@ -1,8 +1,39 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { api } from "@/utils/api";
+import { PencilIcon, Trash2Icon } from "lucide-react";
+import Swal from "sweetalert2";
 
 const PackageCard = ({ card }) => {
   const { isp_id, package_id, name, autoName, bandwidth, price } = card;
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        try {
+          api.delete(`/package/${package_id}`);
+
+          Swal.fire({
+            title: "Deleted!",
+            text: '"' + name + '" (' + autoName + ") has been deleted.",
+            icon: "success"
+          });
+
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    });
+  }
 
   return (
     <Card
@@ -29,8 +60,9 @@ const PackageCard = ({ card }) => {
             <span>tk</span>
           </p>
         </div>
-        <div className="self-end @[454px]/panel:mt-4">
-          <Button variant="outline" size="sm" className="w-fit cursor-pointer">Edit</Button>
+        <div className="flex @[454px]/panel:flex-row flex-col gap-2 @[454px]/panel:mt-5 @self-end">
+          <Button variant="outline" size="sm" className="w-full cursor-pointer"><PencilIcon /> Edit</Button>
+          <Button onClick={handleDelete} variant="destructive" size="sm" className="w-full transition-all duration-200 ease-in-out cursor-pointer"><Trash2Icon /></Button>
         </div>
       </CardContent>
     </Card>

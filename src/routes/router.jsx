@@ -39,7 +39,6 @@ const router = createBrowserRouter([
       { index: true, element: <Statistics /> },
       { path: 'client-details/:id', element: <ClientDetails /> },
       { path: 'add-client', element: <AddClient /> },
-      { path: 'add-package', element: <AddPackage /> },
       { path: 'packages', element: <Packages /> },
       { path: 'get-location', element: <GetLocation /> },
 

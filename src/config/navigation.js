@@ -32,11 +32,6 @@ export const navigationConfig = {
       icon: IconPackage,
     },
     {
-      title: "Add Packages",
-      url: "/dashboard/add-package",
-      icon: IconPackage,
-    },
-    {
       title: "Get Location",
       url: "/dashboard/get-location",
       icon: IconMapPinSearch,
