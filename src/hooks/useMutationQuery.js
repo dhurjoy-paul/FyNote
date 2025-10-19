@@ -5,9 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const DEFAULT_MUTATION_CONFIG = {
   retry: 1,                // retry once if fails
   retryDelay: 1000,        // wait 1 second before retry
-
-  // onSuccess: (data, variables, context) => { },
-  onError: (error, variables, context) => { console.error('⦿•=>', 'Mutation failed:', error) },
+  onError: (error) => { console.error('⦿•=>', 'Mutation failed:', error) },
 };
 
 // Generic factory for POST requests
@@ -20,16 +18,27 @@ export const usePostMutation = (endpoint, invalidateKeys = [], dataExtractor = n
         const { data } = await api.post(endpoint, payload);
         return dataExtractor ? dataExtractor(data) : data;
       },
+      ...DEFAULT_MUTATION_CONFIG,
+      ...options,
       onSuccess: (data, variables, context) => {
         // Invalidate related queries
         invalidateKeys.forEach(key => {
-          queryClient.invalidateQueries({ queryKey: Array.isArray(key) ? key : [key] });
+          const queryKey = typeof key === 'function'
+            ? key(variables)
+            : key;
+
+          const finalKey = Array.isArray(queryKey) ? queryKey : [queryKey];
+
+          console.log('Invalidating query:', finalKey);
+          queryClient.invalidateQueries({ queryKey: finalKey });
         });
         // Call custom onSuccess if provided
         options.onSuccess?.(data, variables, context);
       },
-      ...DEFAULT_MUTATION_CONFIG,
-      ...options
+      onError: (error, variables, context) => {
+        DEFAULT_MUTATION_CONFIG.onError?.(error, variables, context);
+        options.onError?.(error, variables, context);
+      },
     });
   };
 };
@@ -41,7 +50,6 @@ export const usePutMutation = (endpoint, invalidateKeys = [], dataExtractor = nu
 
     return useMutation({
       mutationFn: async (payload) => {
-        // Support dynamic endpoints for updates (e.g., /users/:id)
         const url = typeof endpoint === 'function'
           ? endpoint(payload)
           : endpoint;
@@ -49,24 +57,30 @@ export const usePutMutation = (endpoint, invalidateKeys = [], dataExtractor = nu
         const { data } = await api.put(url, payload);
         return dataExtractor ? dataExtractor(data) : data;
       },
+      ...DEFAULT_MUTATION_CONFIG,
+      ...options,
       onSuccess: (data, variables, context) => {
-        // Invalidate related queries
         invalidateKeys.forEach(key => {
           const queryKey = typeof key === 'function'
             ? key(variables)
             : key;
-          queryClient.invalidateQueries({ queryKey: Array.isArray(queryKey) ? queryKey : [queryKey] });
+
+          const finalKey = Array.isArray(queryKey) ? queryKey : [queryKey];
+
+          console.log('Invalidating query:', finalKey);
+          queryClient.invalidateQueries({ queryKey: finalKey });
         });
-        // Call custom onSuccess if provided
         options.onSuccess?.(data, variables, context);
       },
-      ...DEFAULT_MUTATION_CONFIG,
-      ...options
+      onError: (error, variables, context) => {
+        DEFAULT_MUTATION_CONFIG.onError?.(error, variables, context);
+        options.onError?.(error, variables, context);
+      },
     });
   };
 };
 
-// generic factory for DELETE requests
+// Generic factory for DELETE requests
 export const useDeleteMutation = (endpoint, invalidateKeys = [], dataExtractor = null) => {
   return (options = {}) => {
     const queryClient = useQueryClient();
@@ -81,16 +95,27 @@ export const useDeleteMutation = (endpoint, invalidateKeys = [], dataExtractor =
         const { data } = await api.delete(url);
         return dataExtractor ? dataExtractor(data) : data;
       },
+      ...DEFAULT_MUTATION_CONFIG,
+      ...options,
       onSuccess: (data, variables, context) => {
         // Invalidate related queries
         invalidateKeys.forEach(key => {
-          queryClient.invalidateQueries({ queryKey: Array.isArray(key) ? key : [key] });
+          const queryKey = typeof key === 'function'
+            ? key(variables)
+            : key;
+
+          const finalKey = Array.isArray(queryKey) ? queryKey : [queryKey];
+
+          console.log('Invalidating query:', finalKey);
+          queryClient.invalidateQueries({ queryKey: finalKey });
         });
         // Call custom onSuccess if provided
         options.onSuccess?.(data, variables, context);
       },
-      ...DEFAULT_MUTATION_CONFIG,
-      ...options
+      onError: (error, variables, context) => {
+        DEFAULT_MUTATION_CONFIG.onError?.(error, variables, context);
+        options.onError?.(error, variables, context);
+      },
     });
   };
 };

@@ -9,7 +9,6 @@ import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon, PencilIcon } from "lu
 import { useState } from "react"
 
 const EditPackageDrawer = ({ card }) => {
-  const { mutate: editPackage } = useUpdatePackage();
   const { isp_id, package_id, name, bandwidth, price } = card
 
   const [open, setOpen] = useState(false)
@@ -17,9 +16,21 @@ const EditPackageDrawer = ({ card }) => {
   const [editBandwidth, setEditBandwidth] = useState(bandwidth || "")
   const [editPrice, setEditPrice] = useState(price || "")
   const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
+
+  const { mutate: editPackage, isPending } = useUpdatePackage({
+    onSuccess: (data) => {
+      setOpen(false)
+      ToastSuccess("Package updated successfully!")
+    },
+    onError: (error) => {
+      ToastFailed("Failed to update package. Please try again.")
+      console.error("EditPackage error:", error)
+    }
+  });
 
   const handleOpenChange = (isOpen) => {
+    if (isPending && !isOpen) return;
+
     setOpen(isOpen)
     if (isOpen) {
       setPackageName(name || "")
@@ -64,17 +75,7 @@ const EditPackageDrawer = ({ card }) => {
       price: Number(editPrice),
     }
 
-    setLoading(true)
-    try {
-      editPackage({ package_id, ...packageData });
-      ToastSuccess("Package updated successfully!")
-      setOpen(false)
-    } catch (err) {
-      ToastFailed("Failed to update package. Please try again.")
-      console.error("EditPackage error:", err)
-    } finally {
-      setLoading(false)
-    }
+    editPackage({ package_id, ...packageData });
   }
 
   return (
@@ -103,6 +104,7 @@ const EditPackageDrawer = ({ card }) => {
                   placeholder="Duronto BASIC"
                   value={packageName}
                   onChange={(e) => setPackageName(e.target.value)}
+                  disabled={isPending}
                 />
                 <InputGroupAddon>
                   <ALargeSmallIcon
@@ -128,6 +130,7 @@ const EditPackageDrawer = ({ card }) => {
                   value={editBandwidth}
                   onChange={(e) => setEditBandwidth(e.target.value)}
                   onWheel={(e) => e.target.blur()}
+                  disabled={isPending}
                 />
                 <InputGroupAddon>
                   <GaugeIcon
@@ -158,6 +161,7 @@ const EditPackageDrawer = ({ card }) => {
                   value={editPrice}
                   onChange={(e) => setEditPrice(e.target.value)}
                   onWheel={(e) => e.target.blur()}
+                  disabled={isPending}
                 />
                 <InputGroupAddon>
                   <BadgeTurkishLiraIcon className="group-focus-within:text-primary" />
@@ -176,15 +180,23 @@ const EditPackageDrawer = ({ card }) => {
 
           <DrawerFooter>
             <div className="flex justify-center items-center gap-4 mt-3">
-              {loading ? (
-                <Button disabled>
-                  <FastSpinner /> Updating
-                </Button>
-              ) : (
-                <Button onClick={handleEdit}>Update</Button>
-              )}
+              <Button
+                onClick={handleEdit}
+                disabled={isPending}
+              >
+                {
+                  isPending
+                    ? <><FastSpinner /> Updating</>
+                    : "Update"
+                }
+              </Button>
+
               <DrawerClose asChild>
-                <Button variant="outline" onClick={() => setOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  disabled={isPending}
+                >
                   Cancel
                 </Button>
               </DrawerClose>
