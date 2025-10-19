@@ -1,3 +1,4 @@
+import { ToastFailed, ToastSuccess } from "@/components/shared/ToastMassage"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -7,26 +8,9 @@ import { motion } from 'framer-motion'
 import { Eye, EyeOff, GalleryVerticalEnd } from "lucide-react"
 import { useState } from 'react'
 import { useNavigate } from "react-router"
-import { toast } from "react-toastify"
 import LoginButton from "./LoginButton"
 
 const Login = () => {
-  const notifySuccess = (msg) => {
-    toast.success(
-      <span className='font-bricolage-grotesque font-semibold text-green-600 text-lg leading-6'>{msg}</span>
-    );
-  };
-  const notifyFailed = (error, msg) => {
-    toast.error(
-      <div className='font-semibold'>
-        <div className='flex gap-3 mb-1'>
-          <span className='font-bricolage-grotesque font-semibold text-red-600 text-lg leading-6'>{msg}</span>
-        </div>
-        <p>{error}</p>
-      </div>
-    );
-  };
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState('false');
@@ -43,7 +27,7 @@ const Login = () => {
       const response = await api.post('/auth/login', formData);
       if (response.status === 200) {
         console.log('⦿•=>', 'Success:', response.data); // to be removed
-        notifySuccess("Successfully logged in!")
+        ToastSuccess("Successfully logged in!")
         console.log('⦿•=>', 'Login successful!');
         navigate('/dashboard')
         setLoading(false);
@@ -52,10 +36,10 @@ const Login = () => {
       setLoading(false);
       console.error('⦿•=>', 'Error:', error);
       if (error.response?.status === 401) {
-        notifyFailed("Invalid email or password. Please try again.", "Login failed!")
+        ToastFailed("Login failed!", "Invalid email or password. Please try again.")
         console.log("⦿•=>", 'Invalid email or password');
       } else {
-        notifyFailed(error.response?.data?.message, "Login failed!")
+        ToastFailed("Login failed!", error.response?.data?.message)
       }
     }
   };

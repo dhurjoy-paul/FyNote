@@ -1,4 +1,5 @@
 import { FastSpinner } from "@/components/shared/FastSpinner"
+import { ToastFailed, ToastSuccess } from "@/components/shared/ToastMassage"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group"
@@ -6,7 +7,6 @@ import { Label } from "@/components/ui/label"
 import { api } from "@/utils/api"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon, PencilIcon } from "lucide-react"
 import { useState } from "react"
-import { toast } from "react-toastify"
 
 const EditPackageDrawer = ({ card, refetch }) => {
   const { isp_id, package_id, name, bandwidth, price } = card
@@ -53,7 +53,7 @@ const EditPackageDrawer = ({ card, refetch }) => {
 
   const handleEdit = async () => {
     if (!validate()) {
-      toast.error("Please fix the errors before submitting.")
+      ToastFailed("Please fix the errors before submitting.")
       return
     }
 
@@ -66,10 +66,10 @@ const EditPackageDrawer = ({ card, refetch }) => {
     setLoading(true)
     try {
       await api.put(`/package/${package_id}`, packageData) // use Tanstack Query mutation
-      toast.success("Package updated successfully!")
+      ToastSuccess("Package updated successfully!")
       setOpen(false)
     } catch (err) {
-      toast.error("Failed to update package. Please try again.")
+      ToastFailed("Failed to update package. Please try again.")
       console.error("EditPackage error:", err)
     } finally {
       refetch()

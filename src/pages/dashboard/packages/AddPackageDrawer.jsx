@@ -1,4 +1,5 @@
 import { FastSpinner } from "@/components/shared/FastSpinner"
+import { ToastFailed, ToastSuccess } from "@/components/shared/ToastMassage"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
@@ -8,7 +9,6 @@ import { api } from "@/utils/api"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon } from "lucide-react"
 import { useState } from "react"
 import { LuPackagePlus } from "react-icons/lu"
-import { toast } from "react-toastify"
 
 const AddPackageDrawer = ({ refetch }) => {
   const [open, setOpen] = useState(false)
@@ -48,7 +48,7 @@ const AddPackageDrawer = ({ refetch }) => {
 
   const handleSave = async () => {
     if (!validate()) {
-      toast.error("Please fix the errors before submitting.")
+      ToastFailed("Please fix the errors before submitting.")
       return
     }
 
@@ -61,11 +61,11 @@ const AddPackageDrawer = ({ refetch }) => {
     setLoading(true)
     try {
       await api.post("/package/add", packageData) // use Tanstack Query mutation
-      toast.success("Package added successfully!")
+      ToastSuccess("Package added successfully!")
       resetForm()
       setOpen(false)
     } catch (err) {
-      toast.error("Failed to add package. Please try again.")
+      ToastFailed("Failed to add package. Please try again.")
       console.error("AddPackage error:", err)
     } finally {
       refetch();

@@ -6,6 +6,7 @@ import { IconDotsVertical, IconLogout, IconUserCircle } from "@tabler/icons-reac
 import { useQueryClient } from "@tanstack/react-query";
 import { HashIcon } from "lucide-react";
 import { useNavigate } from "react-router";
+import { ToastFailed, ToastSuccess } from "../shared/ToastMassage";
 
 export function NavUser({ user, isLoading }) {
   const { isMobile } = useSidebar();
@@ -21,7 +22,9 @@ export function NavUser({ user, isLoading }) {
   async function handleLogout() {
     try {
       await api.post("/auth/logout", {}, { withCredentials: true });
+      ToastSuccess("Logged out successfully");
     } catch (err) {
+      ToastFailed("Failed to log out", err);
       console.error("Logout error:", err);
     } finally {
       queryClient.clear();

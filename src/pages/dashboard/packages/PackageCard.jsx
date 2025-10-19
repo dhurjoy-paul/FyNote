@@ -1,3 +1,4 @@
+import { ToastFailed, ToastSuccess } from "@/components/shared/ToastMassage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/utils/api";
@@ -23,15 +24,11 @@ const PackageCard = ({ card, refetch }) => {
         try {
           api.delete(`/package/${package_id}`); // use Tanstack Query mutation
 
-          Swal.fire({
-            title: "Deleted!",
-            text: '"' + name + '" (' + autoName + ") has been deleted.",
-            icon: "success"
-          });
-        } catch (error) {
-          console.log(error)
-        } finally {
           refetch();
+          ToastSuccess(`Package "${name ? name : autoName ? autoName : `Package #${package_id}`}" deleted successfully.`);
+        } catch (err) {
+          ToastFailed("Failed to delete the package.");
+          console.log(err)
         }
       }
     });
