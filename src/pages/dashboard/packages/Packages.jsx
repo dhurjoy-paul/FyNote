@@ -1,26 +1,9 @@
-import { api } from "@/utils/api";
-import { useQuery } from "@tanstack/react-query";
+import { usePackages } from "@/hooks/allGetQueries";
 import AddPackageDrawer from "./AddPackageDrawer";
 import PackageCard from "./PackageCard";
 
 const Packages = () => {
-  const { data: packages, isLoading, refetch,  } = useQuery({
-    queryKey: ['packages'],
-    queryFn: async () => {
-      const res = await api.get(`/package`);
-      return res.data.packages;
-    },
-    enabled: true,
-  });
-
-
-  // const {
-  //   data: packages,
-  //   isLoading,
-  //   error,
-  //   refetch,
-  //   isRefetching
-  // } = usePackages();
+  const { data: packages, isLoading, refetch, } = usePackages();
 
   if (isLoading) {
     return <p>Loading packages...</p>;

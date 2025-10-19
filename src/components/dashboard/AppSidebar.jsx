@@ -3,22 +3,14 @@ import { NavUser } from "@/components/dashboard/NavUser"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/dashboard/Sidebar"
 import { navigationConfig } from "@/config/navigation"
 // import { useAuth } from "@/hooks/useAuth"
-import { useAuth } from "@/hooks/allHooks"
+import { useUserProfile } from "@/hooks/allGetQueries"
 import { IconInnerShadowTop } from "@tabler/icons-react"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 
 
 export function AppSidebar({ ...props }) {
-  const {
-    data: user,
-    isLoading,
-    error,
-    refetch,
-    isRefetching
-  } = useAuth();
-
+  const { data: user, isLoading } = useUserProfile();
   const { ispName, ispLogo } = user || {};
-
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
