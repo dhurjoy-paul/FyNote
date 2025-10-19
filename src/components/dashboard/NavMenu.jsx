@@ -15,7 +15,7 @@ export function NavMenu({ items, ...props }) {
                     <item.icon className="size-5" />
                     <span>{item.title}</span>
                   </div>
-                  <span className="mr-1 px-1 pt-0.5 pb-1 border border-primary rounded-md text-primary text-xs">Coming</span>
+                  <span className="bg-gradient-to-tr from-primary/35 to-card mr-1 px-3 pt-0.5 pb-1 border border-secondary rounded-md font-bold text-primary text-xs transition-colors duration-200 ease-in-out">Coming</span>
                 </div>
               ) : (
                 <NavLink
@@ -37,10 +37,8 @@ export function NavMenu({ items, ...props }) {
                       {item.badge && (
                         <span
                           className={cn(
-                            "mr-1 px-1 pt-0.5 pb-1 border rounded-md text-xs transition-colors",
-                            isActive
-                              ? "bg-primary-foreground text-primary border-primary-foreground"
-                              : "text-primary border-primary"
+                            "bg-gradient-to-tr from-primary/35 to-card mr-1 px-3 pt-0.5 pb-1 border border-secondary rounded-md font-bold text-primary text-xs transition-colors duration-200 ease-in-out",
+                            isActive ? "bg-secondary" : ""
                           )}
                         >
                           {item.badge}

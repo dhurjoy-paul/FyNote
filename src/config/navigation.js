@@ -35,7 +35,7 @@ export const navigationConfig = {
       title: "Get Location",
       url: "/dashboard/get-location",
       icon: IconMapPinSearch,
-      badge: "Beta",
+      badge: "Alpha",
     }
   ],
   navSecondary: [
