@@ -5,18 +5,17 @@ import { Card } from "@/components/ui/card"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group"
 import { Label } from "@/components/ui/label"
-import { api } from "@/utils/api"
+import { useAddPackage } from "@/hooks/allPostQueries"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon } from "lucide-react"
 import { useState } from "react"
 import { LuPackagePlus } from "react-icons/lu"
 
-const AddPackageDrawer = ({ refetch }) => {
+const AddPackageDrawer = () => {
   const [open, setOpen] = useState(false)
   const [packageName, setPackageName] = useState("")
   const [bandwidth, setBandwidth] = useState("")
   const [price, setPrice] = useState("")
   const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
 
   const resetForm = () => {
     setPackageName("")
@@ -46,6 +45,18 @@ const AddPackageDrawer = ({ refetch }) => {
     return Object.keys(newErrors).length === 0
   }
 
+  const { mutate: addPackage, isPending: isLoading } = useAddPackage({
+    onSuccess: () => {
+      ToastSuccess("Package added successfully!")
+      resetForm()
+      setOpen(false)
+    },
+    onError: (error) => {
+      ToastFailed("Failed to add package. Please try again.")
+      console.error("AddPackage error:", error)
+    }
+  });
+
   const handleSave = async () => {
     if (!validate()) {
       ToastFailed("Please fix the errors before submitting.")
@@ -58,19 +69,7 @@ const AddPackageDrawer = ({ refetch }) => {
       price: Number(price),
     }
 
-    setLoading(true)
-    try {
-      await api.post("/package/add", packageData) // use Tanstack Query mutation
-      ToastSuccess("Package added successfully!")
-      resetForm()
-      setOpen(false)
-    } catch (err) {
-      ToastFailed("Failed to add package. Please try again.")
-      console.error("AddPackage error:", err)
-    } finally {
-      refetch();
-      setLoading(false)
-    }
+    addPackage(packageData);
   }
 
   return (
@@ -164,7 +163,7 @@ const AddPackageDrawer = ({ refetch }) => {
           <DrawerFooter>
             <div className="flex justify-center items-center gap-4 mt-3">
               {
-                loading
+                isLoading
                   ? <Button disabled><FastSpinner /> Saving</Button>
                   : <Button onClick={handleSave}>Save</Button>
               }

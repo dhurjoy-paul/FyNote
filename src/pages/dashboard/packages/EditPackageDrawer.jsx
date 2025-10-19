@@ -5,11 +5,10 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group"
 import { Label } from "@/components/ui/label"
 import { useUpdatePackage } from "@/hooks/allPutQueries"
-import { api } from "@/utils/api"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon, PencilIcon } from "lucide-react"
 import { useState } from "react"
 
-const EditPackageDrawer = ({ card, refetch }) => {
+const EditPackageDrawer = ({ card }) => {
   const { mutate: editPackage } = useUpdatePackage();
   const { isp_id, package_id, name, bandwidth, price } = card
 
@@ -53,7 +52,7 @@ const EditPackageDrawer = ({ card, refetch }) => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleEdit = async () => {
+  const handleEdit = () => {
     if (!validate()) {
       ToastFailed("Please fix the errors before submitting.")
       return
@@ -74,7 +73,6 @@ const EditPackageDrawer = ({ card, refetch }) => {
       ToastFailed("Failed to update package. Please try again.")
       console.error("EditPackage error:", err)
     } finally {
-      refetch()
       setLoading(false)
     }
   }

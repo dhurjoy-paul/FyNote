@@ -7,7 +7,7 @@ import { Trash2Icon } from "lucide-react";
 import Swal from "sweetalert2";
 import EditPackageDrawer from "./EditPackageDrawer";
 
-const PackageCard = ({ card, refetch }) => {
+const PackageCard = ({ card }) => {
   const { mutate: deletePackage, isPending: isDeleting } = useDeletePackage();
   const { isp_id, package_id, name, autoName, bandwidth, price } = card;
 
@@ -67,7 +67,7 @@ const PackageCard = ({ card, refetch }) => {
             </p>
           </div>
           <div className="flex @[454px]/panel:flex-row flex-col gap-2 @[454px]/panel:mt-5 @self-end">
-            <EditPackageDrawer card={card} refetch={refetch} />
+            <EditPackageDrawer card={card} />
             {
               !isDeleting &&
               <Button onClick={handleDelete} variant="destructive" size="sm" className="w-full transition-all duration-200 ease-in-out cursor-pointer">

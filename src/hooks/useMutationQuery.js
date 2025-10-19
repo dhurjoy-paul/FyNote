@@ -10,6 +10,30 @@ const DEFAULT_MUTATION_CONFIG = {
   onError: (error, variables, context) => { console.error('⦿•=>', 'Mutation failed:', error) },
 };
 
+// Generic factory for POST requests
+export const usePostMutation = (endpoint, invalidateKeys = [], dataExtractor = null) => {
+  return (options = {}) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: async (payload) => {
+        const { data } = await api.post(endpoint, payload);
+        return dataExtractor ? dataExtractor(data) : data;
+      },
+      onSuccess: (data, variables, context) => {
+        // Invalidate related queries
+        invalidateKeys.forEach(key => {
+          queryClient.invalidateQueries({ queryKey: Array.isArray(key) ? key : [key] });
+        });
+        // Call custom onSuccess if provided
+        options.onSuccess?.(data, variables, context);
+      },
+      ...DEFAULT_MUTATION_CONFIG,
+      ...options
+    });
+  };
+};
+
 // Generic factory for PUT requests
 export const usePutMutation = (endpoint, invalidateKeys = [], dataExtractor = null) => {
   return (options = {}) => {
