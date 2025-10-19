@@ -10,7 +10,39 @@ const DEFAULT_MUTATION_CONFIG = {
   onError: (error, variables, context) => { console.error('⦿•=>', 'Mutation failed:', error) },
 };
 
-// Generic factory for DELETE requests
+// Generic factory for PUT requests
+export const usePutMutation = (endpoint, invalidateKeys = [], dataExtractor = null) => {
+  return (options = {}) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: async (payload) => {
+        // Support dynamic endpoints for updates (e.g., /users/:id)
+        const url = typeof endpoint === 'function'
+          ? endpoint(payload)
+          : endpoint;
+
+        const { data } = await api.put(url, payload);
+        return dataExtractor ? dataExtractor(data) : data;
+      },
+      onSuccess: (data, variables, context) => {
+        // Invalidate related queries
+        invalidateKeys.forEach(key => {
+          const queryKey = typeof key === 'function'
+            ? key(variables)
+            : key;
+          queryClient.invalidateQueries({ queryKey: Array.isArray(queryKey) ? queryKey : [queryKey] });
+        });
+        // Call custom onSuccess if provided
+        options.onSuccess?.(data, variables, context);
+      },
+      ...DEFAULT_MUTATION_CONFIG,
+      ...options
+    });
+  };
+};
+
+// generic factory for DELETE requests
 export const useDeleteMutation = (endpoint, invalidateKeys = [], dataExtractor = null) => {
   return (options = {}) => {
     const queryClient = useQueryClient();

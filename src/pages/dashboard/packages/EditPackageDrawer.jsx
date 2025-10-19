@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group"
 import { Label } from "@/components/ui/label"
+import { useUpdatePackage } from "@/hooks/allPutQueries"
 import { api } from "@/utils/api"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon, PencilIcon } from "lucide-react"
 import { useState } from "react"
 
 const EditPackageDrawer = ({ card, refetch }) => {
+  const { mutate: editPackage } = useUpdatePackage();
   const { isp_id, package_id, name, bandwidth, price } = card
 
   const [open, setOpen] = useState(false)
@@ -65,7 +67,7 @@ const EditPackageDrawer = ({ card, refetch }) => {
 
     setLoading(true)
     try {
-      await api.put(`/package/${package_id}`, packageData) // use Tanstack Query mutation
+      editPackage({ package_id, ...packageData });
       ToastSuccess("Package updated successfully!")
       setOpen(false)
     } catch (err) {
