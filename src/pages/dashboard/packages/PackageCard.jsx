@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/utils/api";
-import { PencilIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import Swal from "sweetalert2";
+import EditPackageDrawer from "./EditPackageDrawer";
 
-const PackageCard = ({ card }) => {
+const PackageCard = ({ card, refetch }) => {
   const { isp_id, package_id, name, autoName, bandwidth, price } = card;
 
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
+      text: `"${name ? name : autoName ? autoName : `Package #${package_id}`}" will be deleted permanently.`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -18,21 +20,22 @@ const PackageCard = ({ card }) => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-
         try {
-          api.delete(`/package/${package_id}`);
+          api.delete(`/package/${package_id}`); // use Tanstack Query mutation
 
           Swal.fire({
             title: "Deleted!",
             text: '"' + name + '" (' + autoName + ") has been deleted.",
             icon: "success"
           });
-
         } catch (error) {
           console.log(error)
+        } finally {
+          refetch();
         }
       }
     });
+    refetch();  // fix the issue of not updating the UI after deletion
   }
 
   return (
@@ -61,7 +64,7 @@ const PackageCard = ({ card }) => {
           </p>
         </div>
         <div className="flex @[454px]/panel:flex-row flex-col gap-2 @[454px]/panel:mt-5 @self-end">
-          <Button variant="outline" size="sm" className="w-full cursor-pointer"><PencilIcon /> Edit</Button>
+          <EditPackageDrawer card={card} refetch={refetch} />
           <Button onClick={handleDelete} variant="destructive" size="sm" className="w-full transition-all duration-200 ease-in-out cursor-pointer"><Trash2Icon /></Button>
         </div>
       </CardContent>
