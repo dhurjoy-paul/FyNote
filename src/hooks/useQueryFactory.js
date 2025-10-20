@@ -19,13 +19,22 @@ const DEFAULT_QUERY_CONFIG = {
   // suspense: false                 // default [Leave false unless you use Suspense.]
 };
 
-// Generic reusable hook factory for GET requests
-export const useGetQuery = (key, endpoint, dataExtractor) => {
-  return (options = {}) => {
+// generic factory for GET requests
+export const useGetQuery = (baseKey, getEndpoint, dataExtractor) => {
+  return (params, options = {}) => {
+    const url = typeof getEndpoint === 'function'
+      ? getEndpoint(params)
+      : getEndpoint;
+
+    const baseKeyArray = Array.isArray(baseKey) ? baseKey : [baseKey];
+    const queryKey = params !== undefined
+      ? [...baseKeyArray, params]
+      : baseKeyArray;
+
     return useQuery({
-      queryKey: Array.isArray(key) ? key : [key],
+      queryKey,
       queryFn: async () => {
-        const { data } = await api.get(endpoint);
+        const { data } = await api.get(url);
         return dataExtractor ? dataExtractor(data) : data;
       },
       ...DEFAULT_QUERY_CONFIG,

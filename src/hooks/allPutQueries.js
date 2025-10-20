@@ -1,4 +1,4 @@
-import { usePutMutation } from "./useMutationQuery";
+import { usePutMutation } from "./useQueryFactory";
 
 // edit package
 export const useUpdatePackage = usePutMutation(
