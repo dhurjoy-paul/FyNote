@@ -63,7 +63,7 @@ export function NavUser({ user, isLoading }) {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem className="text-base">
+              <DropdownMenuItem onClick={() => navigate('/dashboard/account')} className="text-base">
                 <IconUserCircle className="size-6" />
                 Account
               </DropdownMenuItem>

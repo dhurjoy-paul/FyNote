@@ -3,7 +3,7 @@ import AddPackageDrawer from "./AddPackageDrawer";
 import PackageCard from "./PackageCard";
 
 const Packages = () => {
-  const { data: packages, isLoading } = usePackages();
+  const { data: packages = [], isLoading } = usePackages();
 
   if (isLoading) {
     return <p>Loading packages...</p>;

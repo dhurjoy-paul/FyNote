@@ -12,7 +12,6 @@ const Statistics = lazy(() => import('@/pages/dashboard/stats/Statistics'));
 const ClientDetails = lazy(() => import('@/pages/dashboard/clientDetails/ClientDetails'));
 const AddClient = lazy(() => import('@/pages/dashboard/addClient/AddClient'));
 const Packages = lazy(() => import('@/pages/dashboard/packages/Packages'));
-const AddPackage = lazy(() => import('@/pages/dashboard/addPackage/AddPackage'));
 const GetLocation = lazy(() => import('@/pages/dashboard/getLocation/GetLocation'));
 const SettingsHome = lazy(() => import('@/pages/settings/SettingsHome'));
 
@@ -21,6 +20,8 @@ const OffClients = lazy(() => import('@/pages/dashboard/clients/OffClients'));
 const PaidClients = lazy(() => import('@/pages/dashboard/clients/PaidClients'));
 const TotalClients = lazy(() => import('@/pages/dashboard/clients/TotalClients'));
 const UnpaidClients = lazy(() => import('@/pages/dashboard/clients/UnpaidClients'));
+
+const Account = lazy(() => import('@/pages/dashboard/account/Account'));
 
 
 const router = createBrowserRouter([
@@ -47,6 +48,8 @@ const router = createBrowserRouter([
       { path: 'unpaid-clients', element: <UnpaidClients /> },
       { path: 'off-clients', element: <OffClients /> },
       { path: 'new-clients', element: <NewClients /> },
+
+      { path: 'account', element: <Account /> },
       {
         path: 'settings',
         element: <SettingsLayout />,

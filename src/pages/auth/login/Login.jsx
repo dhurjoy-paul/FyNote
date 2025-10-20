@@ -22,11 +22,11 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     console.log('⦿•=>', 'Login attempt');
-    console.log('⦿•=>', formData); // to be removed
+    // console.log('⦿•=>', formData); // to be removed
     try {
       const response = await api.post('/auth/login', formData);
       if (response.status === 200) {
-        console.log('⦿•=>', 'Success:', response.data); // to be removed
+        // console.log('⦿•=>', 'Success:', response.data); // to be removed
         ToastSuccess("Successfully logged in!")
         console.log('⦿•=>', 'Login successful!');
         navigate('/dashboard')
