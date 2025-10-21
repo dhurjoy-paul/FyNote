@@ -8,8 +8,14 @@ import { useGetQuery } from "./useQueryFactory";
  * const { data: user, isLoading, ... } = useUserProfile(userId);
  */
 
-// GET all packages hook
-export const usePackages = useGetQuery('packages', '/package', data => data.packages);
-
 // GET ISP profile
 export const useUserProfile = useGetQuery('userProfile', '/ispProfile', data => data.user);
+
+// GET single client details
+export const useClientDetails = useGetQuery('clientDetails', (id) => `/client/${id}`, data => data.client);
+
+// GET all packages
+export const usePackages = useGetQuery('packages', '/package', data => data.packages);
+
+// GET single package
+export const usePackageDetails = useGetQuery('packageSingle', (id) => `/package/${id}`, data => data.package);
