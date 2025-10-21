@@ -6,3 +6,5 @@ export const useUpdatePackage = usePutMutation(
   ['packages', (payload) => ['package', payload.package_id]]
 );
 
+// edit ISP profile
+export const useUpdateProfile = usePutMutation('/ispProfile', ['userProfile']);

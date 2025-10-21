@@ -38,7 +38,7 @@ const PackageCard = ({ card }) => {
     <>
       {
         isDeleting
-          ? <Card className="@container/card flex justify-center items-center dark:bg-card bg-gradient-to-t from-primary/5 to-card shadow-xs hover:shadow-md transition-all duration-200 ease-in-out">
+          ? <Card className="flex justify-center items-center dark:bg-card bg-gradient-to-t from-primary/5 to-card shadow-xs hover:shadow-md transition-all duration-200 ease-in-out">
             <FastSpinner className="size-8" />
           </Card>
           
