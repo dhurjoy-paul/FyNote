@@ -8,7 +8,7 @@ import { useUpdatePackage } from "@/hooks/allPutQueries"
 import { ALargeSmallIcon, BadgeTurkishLiraIcon, GaugeIcon, PencilIcon } from "lucide-react"
 import { useState } from "react"
 
-const EditPackageDrawer = ({ card }) => {
+const EditPackageDrawer = ({ card, disabled }) => {
   const { isp_id, package_id, name, bandwidth, price } = card
 
   const [open, setOpen] = useState(false)
@@ -81,7 +81,7 @@ const EditPackageDrawer = ({ card }) => {
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm" className="w-full cursor-pointer">
+        <Button variant="outline" size="sm" className="w-full cursor-pointer" disabled={disabled}>
           <PencilIcon /> Edit
         </Button>
       </DrawerTrigger>

@@ -1,13 +1,10 @@
 import { usePackages } from "@/hooks/allGetQueries";
 import AddPackageDrawer from "./AddPackageDrawer";
 import PackageCard from "./PackageCard";
+import PackageCardSkeleton from "./PackageCardSkeleton";
 
 const Packages = () => {
   const { data: packages = [], isLoading } = usePackages();
-
-  if (isLoading) {
-    return <p>Loading packages...</p>;
-  }
 
   // @container/panel coming from DashboardLayout.jsx > Outlet wrapper div
   return (
@@ -16,9 +13,14 @@ const Packages = () => {
       {/* add package card */}
       <AddPackageDrawer />
 
+      {/* skeletons while loading */}
+      {isLoading && Array.from({ length: 5 }).map((_, i) => (
+        <PackageCardSkeleton key={i} />
+      ))}
+
       {/* all packages */}
       {
-        packages && packages.map((pkg) => (
+        !isLoading && packages.map((pkg) => (
           <PackageCard key={pkg.package_id} card={pkg} />
         ))
       }
