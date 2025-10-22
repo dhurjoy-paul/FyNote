@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useCloudinaryUpload } from '@/hooks/useCloudinaryUpload';
 import { cn } from '@/lib/utils';
 import { Image as ImageIcon, Loader2, Upload, X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FastSpinner } from '../shared/FastSpinner';
+import { useCloudinaryUpload } from './useCloudinaryUpload';
 
 export const ImageUpload = ({
   value,
@@ -14,8 +15,21 @@ export const ImageUpload = ({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState(value || null);
+  const [localError, setLocalError] = useState(null);
   const fileInputRef = useRef(null);
-  const { uploadImage, uploading, error } = useCloudinaryUpload();
+  const { uploadImage, uploading, error, cancelUpload } = useCloudinaryUpload();
+
+  useEffect(() => {
+    setPreview(value || null);
+  }, [value]);
+
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   const validateFile = (file) => {
     if (!file.type.startsWith('image/')) {
@@ -30,27 +44,33 @@ export const ImageUpload = ({
   };
 
   const handleUpload = async (file) => {
+    let previewUrl = null;
+
     try {
+      setLocalError(null);
       validateFile(file);
 
-      // preview
-      const previewUrl = URL.createObjectURL(file);
+      // Create preview
+      previewUrl = URL.createObjectURL(file);
       setPreview(previewUrl);
 
-      // upload to cloudinary
+      // Upload to cloudinary
       const imageUrl = await uploadImage(file);
 
-      // return the URL to parent component
+      // Return the URL to parent component
       onChange(imageUrl);
 
-      // update preview with actual Cloudinary URL
+      // Update preview with actual Cloudinary URL
       setPreview(imageUrl);
-
-      // clean up blob URL
-      URL.revokeObjectURL(previewUrl);
     } catch (err) {
       console.error('Upload error:', err);
+      setLocalError(err.message);
       setPreview(null);
+      onChange(null);
+    } finally {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
     }
   };
 
@@ -89,8 +109,14 @@ export const ImageUpload = ({
   };
 
   const handleRemove = () => {
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+
     setPreview(null);
     onChange(null);
+    setLocalError(null);
+
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -101,6 +127,17 @@ export const ImageUpload = ({
       fileInputRef.current?.click();
     }
   };
+
+  const handleCancel = () => {
+    cancelUpload();
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview);
+    }
+    setPreview(value || null);
+    setLocalError(null);
+  };
+
+  const displayError = error || localError;
 
   return (
     <div className={cn('w-full', className)}>
@@ -119,7 +156,7 @@ export const ImageUpload = ({
             <img
               src={preview}
               alt="Upload preview"
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover"
             />
 
             {/* overlay on hover */}
@@ -146,9 +183,18 @@ export const ImageUpload = ({
               </Button>
             </div>
 
+            {/* uploading overlay */}
             {uploading && (
-              <div className="absolute inset-0 flex justify-center items-center bg-black/60">
+              <div className="absolute inset-0 flex flex-col justify-center items-center gap-3 bg-black/60">
                 <Loader2 className="w-8 h-8 text-white animate-spin" />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
               </div>
             )}
           </div>
@@ -166,11 +212,19 @@ export const ImageUpload = ({
             uploading && 'cursor-wait'
           )}
         >
-          <div className="flex flex-col justify-center items-center p-12 text-center">
+          <div className="flex flex-col justify-center items-center text-center">
             {uploading ? (
               <>
-                <Loader2 className="mb-4 w-12 h-12 text-muted-foreground animate-spin" />
-                <p className="text-muted-foreground text-sm">Uploading...</p>
+                <FastSpinner className="mb-4 w-12 h-12 text-muted-foreground animate-spin" />
+                <p className="mb-3 text-muted-foreground text-sm">Uploading...</p>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
               </>
             ) : (
               <>
@@ -193,8 +247,8 @@ export const ImageUpload = ({
         </Card>
       )}
 
-      {error && (
-        <p className="mt-2 text-destructive text-sm">{error}</p>
+      {displayError && (
+        <p className="mt-2 text-destructive text-sm">{displayError}</p>
       )}
     </div>
   );
