@@ -3,7 +3,6 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Image as ImageIcon, Loader2, Upload, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { FastSpinner } from '../shared/FastSpinner';
 import { useCloudinaryUpload } from './useCloudinaryUpload';
 
 export const ImageUpload = ({
@@ -56,6 +55,12 @@ export const ImageUpload = ({
 
       // Upload to cloudinary
       const imageUrl = await uploadImage(file);
+
+      if (!imageUrl) {
+        // Upload was cancelled
+        setPreview(null);
+        return;
+      }
 
       // Return the URL to parent component
       onChange(imageUrl);
@@ -156,10 +161,10 @@ export const ImageUpload = ({
             <img
               src={preview}
               alt="Upload preview"
-              className="w-full h-auto object-cover"
+              className="w-full h-full object-cover"
             />
 
-            {/* overlay on hover */}
+            {/* Overlay on hover */}
             <div className="absolute inset-0 flex justify-center items-center gap-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
                 type="button"
@@ -183,10 +188,11 @@ export const ImageUpload = ({
               </Button>
             </div>
 
-            {/* uploading overlay */}
+            {/* Uploading overlay */}
             {uploading && (
               <div className="absolute inset-0 flex flex-col justify-center items-center gap-3 bg-black/60">
                 <Loader2 className="w-8 h-8 text-white animate-spin" />
+                <p className="text-white text-sm">Uploading...</p>
                 <Button
                   type="button"
                   variant="secondary"
@@ -212,10 +218,10 @@ export const ImageUpload = ({
             uploading && 'cursor-wait'
           )}
         >
-          <div className="flex flex-col justify-center items-center text-center">
+          <div className="flex flex-col justify-center items-center p-8 text-center">
             {uploading ? (
               <>
-                <FastSpinner className="mb-4 w-12 h-12 text-muted-foreground animate-spin" />
+                <Loader2 className="mb-4 w-12 h-12 text-muted-foreground animate-spin" />
                 <p className="mb-3 text-muted-foreground text-sm">Uploading...</p>
                 <Button
                   type="button"
@@ -248,7 +254,9 @@ export const ImageUpload = ({
       )}
 
       {displayError && (
-        <p className="mt-2 text-destructive text-sm">{displayError}</p>
+        <div className="bg-destructive/10 mt-2 p-3 border border-destructive/20 rounded-lg">
+          <p className="text-destructive text-sm">{displayError}</p>
+        </div>
       )}
     </div>
   );

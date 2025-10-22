@@ -9,16 +9,25 @@ export const useCloudinaryUpload = () => {
     setUploading(true);
     setError(null);
 
-    // Create abort controller for cancellation
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      const errorMsg = 'Cloudinary configuration is missing. Please check environment variables.';
+      setError(errorMsg);
+      setUploading(false);
+      throw new Error(errorMsg);
+    }
+
     abortControllerRef.current = new AbortController();
 
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+      formData.append('upload_preset', uploadPreset);
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         {
           method: 'POST',
           body: formData,
@@ -28,7 +37,18 @@ export const useCloudinaryUpload = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || 'Upload failed');
+
+        let errorMessage = 'Upload failed';
+
+        if (response.status === 400) {
+          errorMessage = errorData.error?.message || 'Invalid upload configuration. Please check your Cloudinary settings.';
+        } else if (response.status === 401) {
+          errorMessage = 'Unauthorized. Please check your Cloudinary credentials.';
+        } else if (response.status === 413) {
+          errorMessage = 'File is too large.';
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -38,6 +58,7 @@ export const useCloudinaryUpload = () => {
         setError(err.message);
         throw err;
       }
+      return null;
     } finally {
       setUploading(false);
       abortControllerRef.current = null;
