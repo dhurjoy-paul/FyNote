@@ -9,6 +9,7 @@ import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from 
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePackages } from '@/hooks/allGetQueries';
+import { useAddClient } from '@/hooks/allPostQueries';
 import { validateBDPhone } from '@/lib/phoneValidation';
 import { cn } from '@/lib/utils';
 import { ALargeSmallIcon, FileText, MapPin, PhoneIcon, UserPlus } from 'lucide-react';
@@ -19,9 +20,9 @@ import { Controller, useForm } from 'react-hook-form';
 const AddClient = () => {
   // const navigate = useNavigate();
   const { data: packages = [], isLoading: packagesLoading, error: packagesError } = usePackages();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [clientDataForCallback, setClientDataForCallback] = useState(null);
 
   const { register, handleSubmit, control, formState: { errors }, setError, watch } = useForm({
     defaultValues: {
@@ -37,8 +38,47 @@ const AddClient = () => {
 
   const isPaid = watch('isPaid');
   const selectedPackageId = watch('package_id');
-
   const selectedPackage = packages.find(pkg => String(pkg.package_id) === String(selectedPackageId));
+
+  // const { mutate: addClient, isPending: isLoading } = useAddClient({
+  //   onSuccess: () => {
+  //     ToastSuccess('Client added successfully', `${clientData.name} has been added to the system.`);
+  //   },
+  //   onError: (error) => {
+  //     console.warn("⦿•=>", "AddPackage error:", error)
+
+  //     if (error?.response?.data?.message) {
+  //       ToastFailed("Failed to add package", error?.response?.data?.message)
+  //       console.log(`Phone number: ${clientData.phone} is already exists`)
+  //       return
+  //     }
+
+  //     ToastFailed("Failed to add package. Please try again.")
+  //   }
+  // });
+
+  const submittedClientData = clientDataForCallback || {};
+
+  const { mutate: addClient, isPending: isLoading } = useAddClient({
+    onSuccess: () => {
+      ToastSuccess(
+        'Client added successfully',
+        `${submittedClientData.name || 'Client'} has been added to the system.`
+      );
+      setClientDataForCallback(null);
+    },
+    onError: (error) => {
+      console.warn("⦿•=>", "AddPackage error:", error)
+      setClientDataForCallback(null);
+
+      if (error?.response?.data?.message) {
+        ToastFailed("Failed to add package", error?.response?.data?.message)
+        return
+      }
+
+      ToastFailed("Failed to add package. Please try again.")
+    }
+  });
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -64,21 +104,17 @@ const AddClient = () => {
         isPaid: data.isPaid,
         image: data.image || null,
         note: data.note?.trim() || null,
-        gMapLatitude: 22.281239,
+        gMapLattitude: 22.281239,     // spelling mistake on BE
         gMapLongitude: 91.784506,
       };
 
+      setClientDataForCallback(clientData);
       console.log('Submitting client data:', clientData);
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      ToastSuccess('Client added successfully', `${clientData.name} has been added to the system.`);
+      addClient(clientData);
       // navigate('/dashboard');
     } catch (error) {
-      console.error('Error creating client:', error);
       setSubmitError(error.message || 'Failed to create client. Please try again.');
-      ToastFailed('Failed to create client', error.message || '');
     } finally {
       setIsSubmitting(false);
     }
@@ -278,7 +314,7 @@ const AddClient = () => {
                   )}
                 />
               </div>
-            </div>            
+            </div>
 
             {/* row 4: Image Upload */}
             <div className="space-y-2 mb-6">
