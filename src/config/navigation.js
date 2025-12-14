@@ -17,8 +17,8 @@ export const navigationConfig = {
       icon: IconDashboard,
     },
     {
-      title: "Client Details",
-      url: "/dashboard/client-details/:id",
+      title: "Search Client",
+      url: "/dashboard/search-client",
       icon: IconUser,
     },
     {

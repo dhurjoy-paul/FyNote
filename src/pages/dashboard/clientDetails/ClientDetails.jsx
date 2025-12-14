@@ -24,6 +24,23 @@ const ClientDetails = () => {
   const { isp_id: ispIdFrClt, customer_id, name, autoName, package_id, phone, manualLocation, isPaid, isDue, isOff, image, note, gMapLattitude, gMapLongitude, clientAddedDate } = client || {};
   const customerName = name || `Customer ${customer_id}` || autoName || 'No Name';
 
+  // authorization check
+  if (ispId !== ispIdFrClt) {
+    return (
+      <div className="mx-auto py-8 container">
+        <Card>
+          <CardContent className="py-12">
+            <div className="flex flex-col items-center gap-3">
+              <AlertCircle className="w-12 h-12 text-destructive" />
+              <p className="font-semibold text-destructive text-lg">Access Denied</p>
+              <p className="text-muted-foreground">This is not your client</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   // fetching package if have package_id
   const { data: packageDetails, isLoading: isLoadingPackage } = usePackageDetails(package_id, {
     enabled: !!package_id,
@@ -71,23 +88,6 @@ const ClientDetails = () => {
             <div className="flex flex-col items-center gap-3">
               <FastSpinner className="size-8" />
               <p className="text-muted-foreground">Loading client details...</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // authorization check
-  if (ispId !== ispIdFrClt) {
-    return (
-      <div className="mx-auto py-8 container">
-        <Card>
-          <CardContent className="py-12">
-            <div className="flex flex-col items-center gap-3">
-              <AlertCircle className="w-12 h-12 text-destructive" />
-              <p className="font-semibold text-destructive text-lg">Access Denied</p>
-              <p className="text-muted-foreground">This is not your client</p>
             </div>
           </CardContent>
         </Card>

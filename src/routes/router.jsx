@@ -9,11 +9,13 @@ const Login = lazy(() => import('@/pages/auth/login/Login'));
 const ChangePassword = lazy(() => import('@/pages/auth/changePassword/ChangePassword'));
 
 const Statistics = lazy(() => import('@/pages/dashboard/stats/Statistics'));
-const ClientDetails = lazy(() => import('@/pages/dashboard/clientDetails/ClientDetails'));
+const SearchClient = lazy(() => import('@/pages/dashboard/searchClient/SearchClient'));
 const AddClient = lazy(() => import('@/pages/dashboard/addClient/AddClient'));
 const Packages = lazy(() => import('@/pages/dashboard/packages/Packages'));
 const GetLocation = lazy(() => import('@/pages/dashboard/getLocation/GetLocation'));
 const SettingsHome = lazy(() => import('@/pages/settings/SettingsHome'));
+
+const ClientDetails = lazy(() => import('@/pages/dashboard/clientDetails/ClientDetails'));
 
 const NewClients = lazy(() => import('@/pages/dashboard/clients/NewClients'));
 const OffClients = lazy(() => import('@/pages/dashboard/clients/OffClients'));
@@ -38,10 +40,12 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       { index: true, element: <Statistics /> },
-      { path: 'client-details/:idFrParam', element: <ClientDetails /> },
+      { path: 'search-client', element: <SearchClient /> },
       { path: 'add-client', element: <AddClient /> },
       { path: 'packages', element: <Packages /> },
       { path: 'get-location', element: <GetLocation /> },
+
+      { path: 'client-details/:idFrParam', element: <ClientDetails /> },
 
       { path: 'total-clients', element: <TotalClients /> },
       { path: 'paid-clients', element: <PaidClients /> },

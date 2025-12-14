@@ -11,6 +11,9 @@ import { useGetQuery } from "./useQueryFactory";
 // GET ISP profile
 export const useUserProfile = useGetQuery('userProfile', '/ispProfile', data => data.user);
 
+// GET all clients
+export const useClients = useGetQuery('clients', '/clients', data => data.clients);
+
 // GET single client details
 export const useClientDetails = useGetQuery('clientDetails', (id) => `/client/${id}`, data => data.client);
 
